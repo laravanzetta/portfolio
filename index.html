@@ -401,10 +401,10 @@
       footer { flex-direction: column; align-items: center; text-align: center; }
       .footer-name, .footer-copy { width: 100%; }
       .footer-copy { order: 3; }
-      .footer-social { order: 2; gap: 1rem; position: static; left: auto; transform: none; margin: 0.5rem 0; }
-      .footer-social a { width: auto; padding: 0 0.5rem; text-align: center; }
-    }
-
+     .footer-social { order: 2; gap: 0.5rem; position: static; left: auto; transform: none; margin: 1rem 0; }
+     
+     .footer-social a { width: 90px; text-align: center; }
+      }
     /* ABOUT PAGE */
     #view-about { min-height: 100vh; padding-top: 80px; }
     .about-page {
@@ -417,8 +417,8 @@
       background: var(--mid); 
       aspect-ratio: 3/4; 
       width: 100%; 
-      max-width: 420px; /* Evita che su schermi enormi si ingrandisca troppo */
-      margin: 0 auto;   /* La centra perfettamente quando va a capo su mobile */
+      max-width: 420px; 
+      margin: 0 auto;  
     }
 
     .about-photo-col img { 
@@ -426,7 +426,7 @@
       height: 100%; 
       object-fit: cover; 
       object-position: center top; 
-      filter: grayscale(100%) contrast(1.1); /* Ho mantenuto i tuoi filtri originali */
+      filter: grayscale(100%) contrast(1.1);
       display: block;
     }
     .about-photo-caption { position: absolute; bottom: 2rem; left: 2rem; font-family: var(--font-serif); font-style: italic; font-size: 0.8rem; color: var(--light); }
