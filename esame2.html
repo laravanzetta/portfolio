@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lara Vanzetta — Graphic Designer</title>
+ <link rel="stylesheet" href="https://use.typekit.net/nol8cei.css">
+ <style>
+    :root {
+      --red:    #7B0D1E;
+      --cream:  #F0EBE3;
+      --ink:    #0E0D0C;
+      --mid:    #1A1816;
+      --muted:  #4A4540;
+      --light:  #8A8480;
+      
+      --font-serif: 'amandine', serif;
+      --font-corm:  'amandine', serif;
+      
+      --font-body: 'Inter', system-ui, sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--ink); color: var(--cream);
+      font-family: var(--font-body); font-size: 1rem;
+      line-height: 1.6; overflow-x: hidden;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+    button { background: none; border: none; cursor: pointer; font-family: var(--font-body); color: inherit; }
+
+    /* VIEWS */
+    .view { display: none; opacity: 0; }
+    .view.active { display: block; opacity: 1; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.5rem 2.5rem;
+      background: var(--ink); 
+      border-bottom: 1px solid #1E1B18; 
+    }
+    .nav-logo {
+      font-family: var(--font-serif); font-style: italic;
+      font-size: 0.95rem; color: var(--cream); cursor: pointer;
+      letter-spacing: 0.02em;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      transition: max-height 0.35s ease, opacity 0.35s ease, padding 0.35s ease;
+    }
+    .nav-links button {
+      font-size: 0.72rem; font-weight: 400; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--light);
+      transition: color 0.2s;
+    }
+    .nav-links button:hover { color: var(--cream); }
+    .nav-toggle {
+      display: none;
+      width: 2.5rem;
+      height: 2.5rem;
+      border: 1px solid var(--muted);
+      border-radius: 50%;
+      background: transparent;
+      color: var(--muted);
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: border-color 0.2s, color 0.2s, transform 0.2s;
+    }
+    .nav-toggle:hover {
+      border-color: var(--cream);
+      color: var(--cream);
+      transform: scale(1.02);
+    }
+    .nav-copy {
+      font-size: 0.68rem; letter-spacing: 0.1em; color: var(--muted);
+    }
+    nav.open .nav-toggle {
+      border-color: var(--cream);
+      color: var(--cream);
+    }
+    nav.open .nav-links {
+      flex-direction: column;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: rgba(14, 13, 12, 0.98);
+      padding: 1.25rem 2rem 1.5rem;
+      gap: 1rem;
+      border-bottom: 1px solid #1E1B18;
+      opacity: 1;
+      max-height: 300px;
+      pointer-events: auto;
+    }
+    nav.open .nav-links button {
+      width: 100%;
+      text-align: left;
+      color: var(--cream);
+      opacity: 1;
+    }
+
+    /* HOME */
+   
+   .hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 120px 2.5rem 3rem;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.hero-right-texture {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: clamp(140px, 18vw, 240px);
+  height: 100vh;
+  z-index: 0; 
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.hero-right-texture img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right top;
+}
+    
+   .hero-label {
+      position: absolute; 
+      top: 140px; 
+      left: 2.5rem;
+      z-index: 2; 
+      writing-mode: vertical-rl;
+      font-size: 0.6rem; 
+      letter-spacing: 0.2em; 
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+   .hero-issue {
+      font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 1rem;
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .hero-issue::before { content: ''; display: inline-block; width: 20px; height: 1px; background: var(--red); }
+    .hero-name-block { position: relative; z-index: 2; line-height: 0.9; margin-bottom: 2rem; }
+    .hero-name-block .line-1 {
+      display: block;
+      font-family: var(--font-serif); font-style: italic; font-weight: 400;
+      font-size: clamp(4rem, 11vw, 11rem);
+      color: var(--cream); letter-spacing: -0.01em;
+    }
+    .hero-name-block .line-2 {
+      display: block;
+      font-family: var(--font-corm); font-weight: 400;
+      font-size: clamp(2rem, 6.5vw, 6.5rem);
+      text-transform: uppercase; letter-spacing: 0.3em;
+      color: var(--cream);
+    }
+    .hero-bottom {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      position: relative; z-index: 2; /* Sopra al pizzo */
+    }
+   .hero-desc {
+      max-width: 800px; 
+      font-size: clamp(1.1rem, 2vw, 1.4rem); 
+      line-height: 1.5; 
+      color: var(--light);
+      font-weight: 300;
+      letter-spacing: -0.01em;
+    }
+    .hero-desc em {
+      font-family: var(--font-serif); 
+      font-style: italic;
+      color: var(--red); 
+    }
+    .hero-scroll-hint {
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    }
+
+    /* CAROSELLO 3D CARD */
+    .carousel-section {
+      padding: 6rem 0 5rem;
+      border-top: 1px solid #2A2520;
+      overflow: hidden;
+    }
+    .carousel-header {
+      display: flex; justify-content: space-between; align-items: baseline;
+      margin-bottom: 3rem; padding: 0 2.5rem;
+    }
+    .carousel-title { font-family: var(--font-corm); font-style: italic; font-size: clamp(1.2rem, 2vw, 1.8rem); color: var(--cream); }
+    .carousel-sub { font-size: 0.65rem; text-transform: uppercase; color: var(--muted); letter-spacing: 0.15em; }
+
+   .carousel-stage {
+      position: relative;
+      width: 100%;
+      height: 65vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+       perspective: 1000px; 
+    }
+
+    .carousel-card {
+      position: absolute;
+      width: clamp(280px, 34vw, 460px);
+      cursor: pointer;
+      transition: transform 0.6s cubic-bezier(0.22,1,0.36,1), opacity 0.6s ease, filter 0.6s ease, box-shadow 0.6s ease;
+      will-change: transform, opacity, filter;
+      transform: translateZ(0);
+      background: var(--mid);
+      border-radius: 16px;
+      overflow: hidden;
+      -webkit-border-radius: 16px;
+      -webkit-mask-image: -webkit-radial-gradient(white, black);
+      mask-image: radial-gradient(white, black);
+    }
+
+    .carousel-card.pos-center {
+      transform: translateX(0) scale(1);
+      opacity: 1; 
+      z-index: 3;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.7);
+    }
+    
+    .carousel-card.pos-left {
+      transform: translateX(-65%) scale(0.8);
+      opacity: 0.5; z-index: 2;
+      filter: blur(1px);
+    }
+    .carousel-card.pos-right {
+      transform: translateX(65%) scale(0.8);
+      opacity: 0.5; z-index: 2;
+      filter: blur(1px);
+    }
+    .carousel-card.pos-far-left {
+      transform: translateX(-100%) scale(0.6);
+      opacity: 0; z-index: 1;
+      pointer-events: none;
+    }
+    .carousel-card.pos-far-right {
+      transform: translateX(100%) scale(0.6);
+      opacity: 0; z-index: 1;
+      pointer-events: none;
+    }
+
+    .carousel-img-container {
+  width: 100%;
+  aspect-ratio: 3/4;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
+  mask-image: radial-gradient(white, black);
+}
+    .carousel-img-container img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.22,1,0.36,1);
+  will-change: transform;
+  border-radius: 16px; 
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+    .carousel-card.pos-center:hover .carousel-img-container img { transform: scale(1.04); }
+
+    .carousel-img-placeholder {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.62rem; color: #3A3530; text-transform: uppercase;
+      letter-spacing: 0.1em;
+      border-radius: 16px;
+    }
+
+    .carousel-img-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(10,8,7,0.88) 0%, transparent 55%);
+      opacity: 0; transition: opacity 0.35s ease;
+      display: flex; flex-direction: column;
+      justify-content: flex-end; padding: 1.8rem 1.8rem 3rem;
+      border-radius: 16px;
+    }
+    .carousel-card.pos-center:hover .carousel-img-overlay { opacity: 1; }
+    .overlay-cat {
+      font-size: 0.6rem; font-weight: 600; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--red); margin-bottom: 0.4rem;
+    }
+    .overlay-title {
+      font-family: var(--font-serif); font-style: italic;
+      font-size: 1.2rem; color: var(--cream); line-height: 1.2;
+    }
+
+    .carousel-controls {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 2rem 2.5rem 0;
+    }
+    .carousel-progress { font-size: 0.65rem; letter-spacing: 0.12em; color: var(--cream); }
+    .carousel-progress span { 
+      color: var(--cream); 
+      opacity: 1; 
+    }
+    .carousel-btns { display: flex; gap: 0.5rem; }
+    .carousel-btn-nav {
+      width: 40px; height: 40px; background: none;
+      border: 1px solid #2A2520; color: var(--muted);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem; cursor: pointer;
+      transition: border-color 0.2s, color 0.2s; border-radius: 50%;
+    }
+    .carousel-btn-nav:hover { border-color: var(--red); color: var(--cream); }
+
+    /* ABOUT PREVIEW */
+    .about-preview {
+      padding: 6rem 2.5rem;
+      display: grid; grid-template-columns: minmax(240px, 0.8fr) 1fr;
+      gap: 4rem; align-items: center;
+      border-top: 1px solid #2A2520;
+    }
+    .about-preview-img {
+      aspect-ratio: 4/5;
+      max-width: 320px;
+      width: 100%;
+      overflow: hidden;
+      background: var(--mid);
+      justify-self: center;
+    }
+    .about-preview-img img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) contrast(1.1); }
+    .about-eyebrow { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem; }
+    .about-eyebrow::before { content: ''; width: 20px; height: 1px; background: var(--red); }
+    .about-big-text { font-family: var(--font-corm); font-weight: 300; font-size: clamp(1.8rem, 3.5vw, 3rem); line-height: 1.25; color: var(--cream); margin-bottom: 2rem; }
+    .about-big-text em { font-style: italic; color: var(--red); }
+    .about-body { font-size: 0.9rem; line-height: 1.8; color: var(--light); margin-bottom: 2rem; }
+    .ghost-btn { display: inline-flex; align-items: center; gap: 0.8rem; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cream); border: 1px solid var(--red); padding: 0.9rem 2.2rem; background: transparent; transition: background 0.25s ease, color 0.25s ease, gap 0.25s ease; cursor: pointer; }
+    .ghost-btn:hover { background: var(--red); color: var(--cream); gap: 1.2rem; }
+
+    /* CONTACT STRIP */
+    .contact-strip { padding: 6rem 2.5rem; border-top: 1px solid #2A2520; text-align: center; }
+    .contact-strip-pre { font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 2rem; }
+    .contact-strip-heading { font-family: var(--font-corm); font-weight: 300; font-size: clamp(3rem, 8vw, 7rem); line-height: 0.95; color: var(--cream); margin-bottom: 3rem; }
+    .contact-strip-heading em { font-style: italic; color: var(--red); }
+    .contact-strip-btn { display: inline-flex; align-items: center; gap: 0.8rem; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cream); border: 1px solid var(--red); padding: 0.9rem 2.2rem; background: transparent; transition: background 0.25s ease, color 0.25s ease, gap 0.25s ease; cursor: pointer; }
+    .contact-strip-btn:hover { background: var(--red); color: var(--cream); gap: 1.2rem; }
+
+    /* FOOTER */
+    footer {
+      padding: 2rem 2.5rem;
+      border-top: 1px solid #2A2520;
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center;
+      position: relative; 
+    }
+    .footer-name { 
+      font-family: var(--font-serif); 
+      font-style: italic; 
+      color: var(--muted); 
+      font-size: 0.85rem; 
+    }
+    .footer-copy { 
+      font-size: 0.65rem; 
+      letter-spacing: 0.1em; 
+      color: var(--muted); 
+    }
+    .footer-social { 
+      display: flex; 
+      gap: 1.5rem; 
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%); 
+    }
+    .footer-social a { 
+      font-size: 0.65rem; 
+      letter-spacing: 0.12em; 
+      text-transform: uppercase; 
+      color: var(--muted); 
+      transition: color 0.2s; 
+      width: 100px;         
+      text-align: center;   
+    }
+    .footer-social a:hover { 
+      color: var(--red); 
+    }
+
+    @media (max-width: 700px) {
+      footer { flex-direction: column; align-items: center; text-align: center; }
+      .footer-name, .footer-copy { width: 100%; }
+      .footer-copy { order: 3; }
+      .footer-social { order: 2; gap: 1rem; }
+    }
+
+    /* ABOUT PAGE */
+    #view-about { min-height: 100vh; padding-top: 80px; }
+    .about-page {
+      display: grid; grid-template-columns: 420px 1fr; gap: 6rem;
+      padding: 5rem 4rem; align-items: start; min-height: calc(100vh - 80px);
+    }
+   .about-photo-col { 
+      position: relative; 
+      overflow: hidden; 
+      background: var(--mid); 
+      aspect-ratio: 3/4; 
+      width: 100%; 
+      max-width: 420px; /* Evita che su schermi enormi si ingrandisca troppo */
+      margin: 0 auto;   /* La centra perfettamente quando va a capo su mobile */
+    }
+
+    .about-photo-col img { 
+      width: 100%; 
+      height: 100%; 
+      object-fit: cover; 
+      object-position: center top; 
+      filter: grayscale(100%) contrast(1.1); /* Ho mantenuto i tuoi filtri originali */
+      display: block;
+    }
+    .about-photo-caption { position: absolute; bottom: 2rem; left: 2rem; font-family: var(--font-serif); font-style: italic; font-size: 0.8rem; color: var(--light); }
+    .about-info-col { padding-top: 1rem; display: flex; flex-direction: column; justify-content: flex-start; }
+    .about-info-eyebrow { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem; }
+    .about-info-eyebrow::before { content: ''; width: 20px; height: 1px; background: var(--red); }
+    .about-info-heading { font-family: var(--font-corm); font-weight: 300; font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.2; color: var(--cream); margin-bottom: 2rem; }
+    .about-info-heading em { font-style: italic; color: var(--red); }
+    .about-info-text { font-size: 0.9rem; line-height: 1.85; color: var(--light); margin-bottom: 1rem; }
+    .about-divider { width: 40px; height: 1px; background: var(--red); margin: 2rem 0; }
+    .about-skills-label { font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
+    .skills-list { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .skill-tag { font-size: 0.65rem; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.4rem 0.9rem; border: 1px solid #2A2520; color: var(--light); transition: border-color 0.2s, color 0.2s; }
+    .skill-tag:hover { border-color: var(--red); color: var(--cream); }
+    .about-cv-btn { display: inline-flex; align-items: center; gap: 0.6rem; margin-top: 2.5rem; font-size: 0.7rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cream); border: 1px solid var(--red); padding: 0.85rem 1.8rem; transition: background 0.2s; text-decoration: none; }
+    .about-cv-btn:hover { background: var(--red); }
+
+    /*PROGETTI PAGE*/
+    #view-progetti { min-height: 100vh; padding-top: 80px; }
+    .progetti-page { padding: 4rem 2.5rem 8rem; }
+    .progetti-header { margin-bottom: 4rem; border-top: 1px solid #2A2520; padding-top: 2rem; display: flex; justify-content: space-between; align-items: baseline; }
+    .progetti-title { font-family: var(--font-corm); font-style: italic; font-weight: 300; font-size: clamp(2rem, 4vw, 3rem); color: var(--cream); }
+    .progetti-count { font-size: 0.65rem; letter-spacing: 0.15em; color: var(--muted); }
+    .progetti-list { display: flex; flex-direction: column; }
+    .pg-row {
+      display: grid; grid-template-columns: 80px 1fr 200px 120px 40px;
+      align-items: center; gap: 2rem;
+      padding: 1.5rem 0; border-bottom: 1px solid #1E1B18;
+      cursor: pointer; transition: background 0.2s; position: relative;
+    }
+    .pg-row:hover { background: #131110; }
+    .pg-row:hover .pg-row-arrow { color: var(--red); transform: translateX(4px); }
+    .pg-row:hover .pg-row-img { opacity: 1; }
+    .pg-row-num { font-size: 0.65rem; color: var(--muted); }
+    .pg-row-title { font-family: var(--font-serif); font-style: italic; font-size: clamp(1.3rem, 2.5vw, 2rem); color: var(--cream); }
+    .pg-row-cat { font-size: 0.65rem; text-transform: uppercase; color: var(--muted); letter-spacing: 0.14em; }
+    .pg-row-year { font-size: 0.65rem; color: var(--muted); text-align: right; }
+    .pg-row-arrow { font-size: 1rem; color: var(--muted); transition: color 0.2s, transform 0.2s; text-align: right; }
+    .pg-row-img {
+      position: absolute; right: 80px; top: 50%; transform: translateY(-50%);
+      width: 180px; max-height: 180px; overflow: visible;
+      background: transparent; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; z-index: 10;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .pg-row-img img {
+      display: block;
+      width: auto;
+      height: auto;
+      max-width: 180px;
+      max-height: 180px;
+      object-fit: contain;
+    }
+    .pg-row-img-placeholder { width: 100%; height: 100%; background: var(--mid); }
+
+    /*DETTAGLIO PROGETTO*/
+    #view-project { min-height: 100vh; padding-top: 80px; }
+    .detail-back { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.7rem; font-weight: 400; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); padding: 2rem 2.5rem 0; transition: color 0.2s; }
+    .detail-back:hover { color: var(--red); }
+    .detail-hero { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; padding: 2rem 2.5rem 4rem; max-width: 1400px; margin: 0 auto; }
+    .detail-img {
+      width: 100%;
+      max-width: 720px;
+      margin: 0 auto;
+      background: transparent;
+      overflow: visible;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .detail-img img {
+      display: block;
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: 500px;
+      object-fit: contain;
+    }
+    .detail-img-ph { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; text-transform: uppercase; color: #3A3530; border: 1px dashed #2A2520; min-height: 360px; }
+    .detail-info { padding-top: 1rem; }
+    .detail-cat { font-size: 0.65rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--red); margin-bottom: 1rem; }
+    .detail-title { font-family: var(--font-serif); font-style: italic; font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 400; line-height: 1.1; color: var(--cream); margin-bottom: 2rem; }
+    .detail-meta { display: flex; gap: 2rem; margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid #2A2520; }
+    .detail-meta-item { display: flex; flex-direction: column; gap: 0.3rem; }
+    .meta-l { font-size: 0.6rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+    .meta-v { font-size: 0.85rem; color: var(--cream); }
+    .detail-desc { font-size: 0.9rem; line-height: 1.85; color: var(--light); margin-bottom: 2rem; }
+    .detail-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .detail-tag { font-size: 0.62rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.3rem 0.75rem; color: var(--red); border: 1px solid #3A1020; background: rgba(123,13,30,0.08); }
+    .detail-gallery { padding: 0 2.5rem 6rem; max-width: 1400px; margin: 0 auto; }
+    .gallery-label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem; }
+    .gallery-label::after { content: ''; flex: 1; height: 1px; background: #2A2520; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; align-items: start; }
+    .gallery-item { width: 100%; background: var(--mid); overflow: hidden; display: block; }
+    .gallery-item img {
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      }
+  
+    .gallery-ph { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 0.58rem; text-transform: uppercase; color: #3A3530; border: 1px dashed #2A2520; min-height: 160px; }
+
+    /* CONTATTI PAGE */
+    #view-contatti { min-height: 100vh; padding-top: 80px; }
+    .contatti-page {
+      display: grid;
+      grid-template-columns: minmax(320px, 1fr) minmax(360px, 1fr);
+      gap: 3rem;
+      min-height: calc(100vh - 80px);
+    }
+    .contatti-left {
+      padding: 6rem 4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-right: 1px solid #2A2520;
+    }
+    .contatti-eyebrow { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem; }
+    .contatti-eyebrow::before { content: ''; width: 20px; height: 1px; background: var(--red); }
+    .contatti-heading { font-family: var(--font-corm); font-weight: 300; font-size: clamp(2.5rem, 5vw, 5rem); line-height: 1; color: var(--cream); margin-bottom: 2.5rem; }
+    .contatti-heading em { font-style: italic; color: var(--red); }
+    .contatti-desc { font-size: 0.9rem; line-height: 1.8; color: var(--light); margin-bottom: 3rem; }
+    .contact-link { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid #2A2520; transition: border-color 0.2s; }
+    .contact-link:hover { border-color: var(--red); }
+    .contact-link:hover .cl-arr { transform: translateX(5px); color: var(--red); }
+    .cl-lbl { font-size: 0.65rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); min-width: 80px; }
+    .cl-val { font-family: var(--font-serif); font-style: italic; font-size: 1rem; color: var(--cream); flex: 1; text-align: center; }
+    .cl-arr { font-size: 0.9rem; color: var(--muted); transition: transform 0.2s, color 0.2s; }
+    .contatti-right { padding: 6rem 4rem; display: flex; flex-direction: column; justify-content: center; }
+    .form-eyebrow { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 2rem; }
+    .form-group { margin-bottom: 2rem; }
+    .form-label { display: block; font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.6rem; }
+    .form-input, .form-textarea { width: 100%; background: transparent; border: none; border-bottom: 1px solid #2A2520; padding: 0.75rem 0; font-size: 0.95rem; color: var(--cream); font-family: var(--font-body); outline: none; transition: border-color 0.2s; }
+    .form-input:focus, .form-textarea:focus { border-color: var(--red); }
+    .form-input::placeholder, .form-textarea::placeholder { color: #2E2A26; }
+    .form-textarea { resize: none; height: 100px; }
+    .form-error { font-size: 0.65rem; color: var(--red); margin-top: 0.3rem; display: none; }
+    .form-error.visible { display: block; }
+    .form-submit { display: inline-flex; align-items: center; gap: 0.6rem; margin-top: 0.5rem; font-size: 0.7rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cream); background: var(--red); border: none; padding: 0.85rem 2rem; cursor: pointer; font-family: var(--font-body); transition: opacity 0.2s; }
+    .form-submit:hover { opacity: 0.85; }
+    .form-success { display: none; margin-top: 1.5rem; font-family: var(--font-serif); font-style: italic; font-size: 1rem; color: var(--red); }
+    .form-success.visible { display: block; }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      nav {
+        padding: 1rem 1.5rem;
+        justify-content: space-between;
+      }
+      .nav-toggle { display: inline-flex; order: 2; }
+      .nav-links {
+        display: flex;
+        flex-direction: column;
+        max-height: 0;
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        padding: 0;
+        gap: 0;
+        transition: max-height 0.35s ease, opacity 0.25s ease, padding 0.25s ease;
+      }
+      nav.open .nav-links {
+        max-height: 400px;
+        opacity: 1;
+        visibility: visible;
+        padding: 1.25rem 2rem 1.5rem;
+        gap: 1rem;
+      }
+      .nav-copy { display: none; }
+      .hero { padding: 120px 1.5rem 2.5rem; }
+      .hero-right-texture { display: none; }
+      .carousel-card { flex: 0 0 290px; }
+      .carousel-header { flex-direction: column; align-items: flex-start; gap: 0.75rem; padding: 0 1.5rem; }
+      .carousel-title, .carousel-sub { width: 100%; }
+      .about-preview, .about-page, .contatti-page { grid-template-columns: 1fr; }
+      .about-page { padding: 3rem 1.5rem; gap: 3rem; min-height: auto !important; }
+      .about-photo-col { aspect-ratio: 3/4 !important; width: 100%; max-width: 100%; }
+      .about-info-col, .contatti-left, .contatti-right { padding: 3rem 1.5rem; }
+      .contatti-left { border-right: none; border-bottom: 1px solid #2A2520; }
+      .contatti-left, .contatti-right { width: 100%; }
+      .detail-hero { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; }
+      .pg-row { grid-template-columns: 40px 1fr 100px; gap: 1rem; }
+      .pg-row-year, .pg-row-arrow, .pg-row-img { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="mainNav">
+    <span class="nav-logo" onclick="showView('home')">lara.vnz</span>
+    <ul class="nav-links" id="navLinks">
+      <li><button onclick="showView('about')">About</button></li>
+      <li><button onclick="showView('progetti')">Works</button></li>
+      <li><button onclick="showView('contatti')">Contacts</button></li>
+    </ul>
+    <span class="nav-copy">©2026</span>
+    <button class="nav-toggle" id="navToggle" aria-label="Apri menu">☰</button>
+  </nav>
+
+  <div id="view-home" class="view active">
+   
+    <section class="hero">
+      <div class="hero-right-texture">
+        <img src="img/lace-texture.png" alt="Lace Graphic Texture">
+      </div>
+
+      <span class="hero-label">Graphic Designer</span>
+      <div class="hero-center">
+        <p class="hero-issue">Issue 01 / Folio</p>
+        <div class="hero-name-block">
+          <span class="line-1">Lara</span>
+          <span class="line-2">Vanzetta</span>
+        </div>
+      </div>
+      <div class="hero-bottom">
+        <p class="hero-desc">
+          Graphic designer con un approccio focalizzato sulla <em>fotografia concettuale</em>, l'identità visiva e il design editoriale — guidata da una costante attenzione per il <em>dettaglio tipografico</em>.
+        </p>
+        <div class="hero-scroll-hint">
+          <div class="scroll-line"></div>
+        </div>
+      </div>
+    </section> <!-- QUESTO CHIUDE SOLO LA HERO. ORA IL CAROSELLO SOTTO È SALVO! -->
+
+    <section class="carousel-section">
+      <div class="carousel-header">
+        <span class="carousel-title">Selected Works / (22–26)</span>
+        <span class="carousel-sub">Clicca per navigare →</span>
+      </div>
+      <div class="carousel-stage" id="carouselStage"></div>
+      <div class="carousel-controls">
+        <span class="carousel-progress"><span id="carCurrent">01</span> / <span id="carTotal">04</span></span>
+        <div class="carousel-btns">
+          <button class="carousel-btn-nav" id="carPrev">←</button>
+          <button class="carousel-btn-nav" id="carNext">→</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-preview">
+     <div class="about-preview-img"><img src="img/lara.jpg" alt="Lara Vanzetta — Graphic Designer" /></div>
+      <div class="about-preview-text">
+        <p class="about-eyebrow">About Me</p>
+        <h2 class="about-big-text">Faccio design che<br><em>racconta qualcosa.</em></h2>
+        <p class="about-body">Sono Lara Vanzetta, graphic designer laureanda presso la LABA (Libera Accademia di Belle Arti di Brescia) nel corso triennale di Graphic Design e Multimedia. In questo percorso di studi ho sviluppato una metodologia progettuale focalizzata sull'editorial design, il branding e la comunicazione visiva.</p>
+        <button class="ghost-btn" onclick="showView('about')">Scopri di più →</button>
+      </div>
+    </section>
+
+    <section class="contact-strip">
+      <p class="contact-strip-pre">Have a project in mind?</p>
+      <h2 class="contact-strip-heading">Lavoriamo<br><em>insieme?</em></h2>
+      <button class="contact-strip-btn" onclick="showView('contatti')">Scrivimi →</button>
+    </section>
+
+    <footer>
+      <span class="footer-name">Lara Vanzetta</span>
+      <div class="footer-social">
+        <a href="https://instagram.com/by.laravnz" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.linkedin.com/in/lara-vanzetta-32a22b374" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:laravanzetta@gmail.com">Mail</a>
+      </div>
+      <span class="footer-copy">©2026 — Designed by lara.vnz</span>
+    </footer>
+  </div>
+
+  <div id="view-about" class="view">
+    <div class="about-page">
+      <div class="about-photo-col">
+        <img src="img/lara.jpg" alt="Lara Vanzetta" />
+      </div>
+     <div class="about-info-col">
+        <p class="about-info-eyebrow">Chi sono / Issue 01</p>
+        <h2 class="about-info-heading">Faccio design che<br><em>racconta qualcosa.</em></h2>
+       
+        <p class="about-info-text">Sono Lara Vanzetta, graphic designer laureanda presso la LABA (Libera Accademia di Belle Arti di Brescia) nel corso triennale di Graphic Design e Multimedia. In questo percorso di studi ho sviluppato una metodologia progettuale focalizzata sull'editorial design, il branding e la comunicazione visiva, mossa dalla costante ricerca di un equilibrio tra estetica, rigore concettuale e funzione.</p>
+        
+        <p class="about-info-text">Mi dedico anche alla fotografia, in particolare quella concettuale, un linguaggio che utilizzo per tradurre complessità emotive e concetti intangibili in narrazioni visive di forte impatto. Sono profondamente attratta dal potere espressivo della tipografia e dall'uso strutturale dello spazio bianco per dare equilibrio e respiro a ogni progetto.</p>
+        
+        <div class="about-divider"></div>
+        <p class="about-skills-label">Competenze</p>
+        <div class="skills-list">
+          <span class="skill-tag">Branding</span><span class="skill-tag">Editorial</span><span class="skill-tag">Typography</span>
+          <span class="skill-tag">Figma</span><span class="skill-tag">Illustrator</span><span class="skill-tag">Photoshop</span>
+          <span class="skill-tag">InDesign</span><span class="skill-tag">Photography</span>
+        </div>
+        <a href="#" class="about-cv-btn">Scarica CV →</a>
+      </div>
+    </div>
+     <footer>
+      <span class="footer-name">Lara Vanzetta</span>
+      <div class="footer-social">
+        <a href="https://instagram.com/by.laravnz" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.linkedin.com/in/lara-vanzetta-32a22b374" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:laravanzetta@gmail.com">Mail</a>
+      </div>
+      <span class="footer-copy">©2026 — Designed by lara.vnz</span>
+    </footer>
+  </div>
+  </div>
+
+  <div id="view-progetti" class="view">
+    <div class="progetti-page">
+      <div class="progetti-header">
+        <h2 class="progetti-title">Selected Works</h2>
+        <span class="progetti-count" id="progettiCount">— 00 works</span>
+      </div>
+      <div class="progetti-list" id="progettiList"></div>
+    </div>
+     <footer>
+      <span class="footer-name">Lara Vanzetta</span>
+      <div class="footer-social">
+        <a href="https://instagram.com/by.laravnz" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.linkedin.com/in/lara-vanzetta-32a22b374" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:laravanzetta@gmail.com">Mail</a>
+      </div>
+      <span class="footer-copy">©2026 — Designed by lara.vnz</span>
+    </footer>
+  </div>
+  </div>
+
+  <div id="view-project" class="view">
+    <button class="detail-back" id="detailBackBtn">← Torna ai progetti</button>
+    <div class="detail-hero">
+      <div class="detail-img" id="detailImg"></div>
+      <div class="detail-info">
+        <p class="detail-cat" id="detailCat"></p>
+        <h2 class="detail-title" id="detailTitle"></h2>
+        <div class="detail-meta">
+          <div class="detail-meta-item"><span class="meta-l">Anno</span><span class="meta-v" id="detailYear"></span></div>
+          <div class="detail-meta-item"><span class="meta-l">Ruolo</span><span class="meta-v" id="detailRole"></span></div>
+          <div class="detail-meta-item"><span class="meta-l">Strumenti</span><span class="meta-v" id="detailTools"></span></div>
+        </div>
+        <p class="detail-desc" id="detailDesc"></p>
+        <div class="detail-tags" id="detailTags"></div>
+      </div>
+    </div>
+    <div class="detail-gallery">
+      <p class="gallery-label">Galleria</p>
+      <div class="gallery-grid" id="detailGallery"></div>
+    </div>
+     <footer>
+      <span class="footer-name">Lara Vanzetta</span>
+      <div class="footer-social">
+        <a href="https://instagram.com/by.laravnz" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.linkedin.com/in/lara-vanzetta-32a22b374" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:laravanzetta@gmail.com">Mail</a>
+      </div>
+      <span class="footer-copy">©2026 — Designed by lara.vnz</span>
+    </footer>
+  </div>
+  </div>
+
+  <div id="view-contatti" class="view">
+    <div class="contatti-page">
+      <div class="contatti-left">
+        <p class="contatti-eyebrow">Contatti / Get in touch</p>
+        <h2 class="contatti-heading">Lavoriamo<br><em>insieme?</em></h2>
+        <p class="contatti-desc">Sono disponibile per collaborazioni, progetti freelance e opportunità lavorative.</p>
+        <div>
+          <a href="mailto:laravanzetta@gmail.com" class="contact-link"><span class="cl-lbl">Email</span><span class="cl-val">laravanzetta@gmail.com</span><span class="cl-arr">→</span></a>
+          <a href="https://instagram.com/by.laravnz" target="_blank" rel="noopener" class="contact-link"><span class="cl-lbl">Instagram</span><span class="cl-val">@by.laravnz</span><span class="cl-arr">→</span></a>
+          <a href="https://www.linkedin.com/in/lara-vanzetta-32a22b374" target="_blank" rel="noopener" class="contact-link"><span class="cl-lbl">LinkedIn</span><span class="cl-val">Lara Vanzetta</span><span class="cl-arr">→</span></a>
+        </div>
+      </div>
+      <div class="contatti-right">
+        <p class="form-eyebrow">Mandami un messaggio</p>
+        <div class="form-group">
+          <label class="form-label" for="fNome">Nome</label>
+          <input class="form-input" type="text" id="fNome" placeholder="Il tuo nome" />
+          <p class="form-error" id="eNome">Inserisci il tuo nome.</p>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="fEmail">Email</label>
+          <input class="form-input" type="email" id="fEmail" placeholder="tua@email.com" />
+          <p class="form-error" id="eEmail">Inserisci un'email valida.</p>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="fMsg">Messaggio</label>
+          <textarea class="form-textarea" id="fMsg" placeholder="Raccontami il tuo progetto..."></textarea>
+          <p class="form-error" id="eMsg">Scrivi un messaggio.</p>
+        </div>
+        <button class="form-submit" onclick="submitForm()">Invia →</button>
+        <p class="form-success" id="fSuccess">Grazie! Ti rispondo al più presto. ✦</p>
+      </div>
+    </div>
+     <footer>
+      <span class="footer-name">Lara Vanzetta</span>
+      <div class="footer-social">
+        <a href="https://instagram.com/by.laravnz" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.linkedin.com/in/lara-vanzetta-32a22b374" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:laravanzetta@gmail.com">Mail</a>
+      </div>
+      <span class="footer-copy">©2026 — Designed by lara.vnz</span>
+    </footer>
+  </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    /* DATI PROGETTI */
+    const projects = [
+      { id:1, title:"Reflections of Thoughts", 
+      category:"Photography", 
+      year:"2023", 
+      role:"Photographer & Graphic Designer", 
+      tools:"Photoshop, Lightroom", 
+      description:"Un'indagine fotografica e concettuale sul sovraccarico emotivo e la saturazione dei pensieri. Attraverso un itinerario visivo che muove dal caos alla calma, il progetto utilizza giochi di luce, bianco e nero e la doppia esposizione per dare forma e atmosfera all'invisibile complessità della mente, traducendola in un'esperienza estetica catartica.",
+      tags:["Photography","Concept"],
+      cover:"img/progetto1-cover.jpg", 
+      gallery: [
+        "img/progetto1-a.jpg", "img/progetto1-b.jpg", "img/progetto1-c.jpg",
+        "img/progetto1-d.jpg","img/progetto1-g.jpg", "img/progetto1-h.jpg"
+      ] },
+{ 
+        id: 2, 
+        title: "Do You Know Who You Are?", 
+        category: "Poster Design / Brutalism", 
+        year: "2023", 
+        role: "Graphic Designer", 
+        tools: "Photoshop, Illustrator", 
+        description: "Un poster sperimentale che sposa l'estetica brutalista e le correnti acid graphics, ispirato al brano Lights Up. Il layout rigido e asimmetrico accosta una tipografia bold d'impatto a elementi visivi di derivazione industriale, come texture rasterizzate, codici a barre e glifi, immersi in una palette bitonale rosso cupo e nero fortemente sgranata.", 
+        tags: ["Brutalisim", "Typography", "Acid Graphics"], 
+        cover: "img/progetto4-cover.jpg", 
+        gallery: ["img/progetto4-a.jpg", "img/progetto4-b.jpg", "img/progetto4-c.jpg"] 
+      },
+
+
+      { 
+        id: 3, 
+        title: "Pensieri in Trappola", 
+        category: "Typography & Collage", 
+        year: "2024", 
+        role: "Graphic & Typography Designer", 
+        tools: "Photoshop, Illustrator", 
+        description: "Un’esplorazione visiva e tipografica incentrata sul tema dell’overthinking. Attraverso un trittico di opere in stile collage, il progetto traduce la complessità dei pensieri in immagini, fondendo texture materiche, fotografie e una tipografia sperimentale espressamente ispirata a brani musicali iconici che trattano il labirinto emotivo della mente.", 
+        tags: ["Lettering", "Collage Art", "Poster Design"], 
+        cover: "img/progetto2-cover.jpg", 
+        gallery: ["img/progetto2-a.jpg", 
+          "img/progetto2-b.jpg", 
+          "img/progetto2-c.jpg"
+        ] 
+      },
+      { 
+        id: 4, 
+        title: "Hit Me Hard and Soft", 
+        category: "Poster Design / Dark Pop", 
+        year: "2024", 
+        role: "Graphic Designer", 
+        tools: "Photoshop", 
+        description: "Un poster tributo dall'estetica neo-grunge e dark pop dedicato all'omonimo album di Billie Eilish. Il fulcro visivo si concentra su una palette cromatica fredda, tra il blu profondo e il ciano elettrico, caratterizzata da una tipografia cinetica con effetto motion blur che si fonde con il ritratto testurizzato, amplificandone l'atmosfera distorta.", 
+        tags: ["Poster Art", "Glitch Text", "Neo-Grunge"], 
+        cover: "img/progetto3-cover.jpg", 
+        gallery: ["img/progetto3-a.jpg", "img/progetto3-b.jpg", "img/progetto3-c.jpg"] 
+      },
+
+      
+      { 
+        id: 5, 
+        title: "Quando il corpo progetta", 
+        category: "Photography & Personal Branding", 
+        year: "2025", 
+        role: "Photographer & Art Director", 
+        tools: "Lightroom, Photoshop", 
+        description: "Un progetto di personal branding e art direction dedicato all’interior designer @federicabf.design. La serie di ritratti, sviluppata in luce naturale e secondo una rigorosa composizione centrale, sfrutta posture statiche e geometriche per tradurre l'identità professionale in armonia visiva, trasmettendo i concetti chiave di equilibrio, solidità e rigore progettuale.", 
+        tags: ["Personal Branding", "Art Direction", "Photography"], 
+        cover: "img/progetto5-cover.jpg", 
+        gallery: [
+          "img/progetto5-a.jpg", 
+          "img/progetto5-b.jpg", 
+          "img/progetto5-c.jpg",
+          "img/progetto5-d.jpg",
+          "img/progetto5-e.jpg",
+          "img/progetto5-f.jpg"
+        ] 
+      },
+      {
+        id: 6, 
+        title: "WHY2K Fanzine", 
+        category: "Art Direction & Editorial Design", 
+        year: "2026", 
+        role: "Art Director & Editorial Designer (Group Project)", 
+        tools: "InDesign, Photoshop", 
+        description: "Progetto di art direction e re-design editoriale sviluppato collettivamente attorno al macro-tema 'Make the old new'. WHY2K è una fanzine che analizza l’impatto culturale, sociale e mediatico della minigonna nei primi anni Duemila. Il layout celebra l'estetica massimalista e satura del periodo attraverso l'uso di contrasti cromatici acidi, loghi pixelati e composizioni in stile collage. All'interno del collettivo, ho curato l'art direction e la progettazione grafica di una parte delle pagine di apertura, traducendo visivamente lo spirito ribelle e iconico delle celebrity dell'epoca.", 
+        tags: ["Art Direction", "Y2K Aesthetic", "Editorial", "Fanzine", "Typography"], 
+        cover: "img/progetto6-cover.jpg", 
+        gallery: [
+          "img/progetto6-a.jpg",        
+          "img/progetto6-b.jpg",        
+          "img/progetto6-c.jpg"  
+        ] 
+      }
+    ];
+
+    /* NAVIGAZIONE CON ANIMAZIONE GSAP */
+    document.addEventListener('DOMContentLoaded', () => {
+      const navToggle = document.getElementById('navToggle');
+      const nav = document.getElementById('mainNav');
+      const navLinks = document.querySelectorAll('.nav-links button');
+
+      navToggle?.addEventListener('click', () => {
+        nav?.classList.toggle('open');
+        if (navToggle) {
+          navToggle.textContent = nav?.classList.contains('open') ? '×' : '☰';
+        }
+      });
+
+      navLinks.forEach((button) => {
+        button.addEventListener('click', () => {
+          nav?.classList.remove('open');
+          if (navToggle) navToggle.textContent = '☰';
+        });
+      });
+    });
+
+   function showView(name) {
+      const currentActive = document.querySelector('.view.active');
+      const targetView = document.getElementById('view-' + name);
+      
+      if (!targetView || currentActive === targetView) return;
+
+      //  spegnimento altre viste
+      document.querySelectorAll('.view').forEach(view => {
+        if (view !== targetView) {
+          view.classList.remove('active');
+          gsap.set(view, { opacity: 0 });
+        }
+      });
+
+      //  posizione del pizzo 
+      if (name === 'home') {
+        gsap.set(".hero-right-texture", { opacity: 0, y: 40 });
+      }
+     
+      if (currentActive) {
+        gsap.to(currentActive, {
+          opacity: 0,
+          duration: 0.25,
+          onComplete: () => {
+            currentActive.classList.remove('active');
+            window.scrollTo(0, 0); 
+            
+            targetView.classList.add('active');
+            
+            // 1. La pagina compare con una dissolvenza ferma
+            gsap.fromTo(targetView, { opacity: 0 }, { 
+              opacity: 1, 
+              duration: 0.3,
+              onComplete: () => {
+              
+                ScrollTrigger.refresh();
+              }
+            });
+          
+            if (name === 'home') {
+              gsap.to(".hero-right-texture", { opacity: 0.85, y: 0, duration: 1.2, ease: "power3.out" });
+              animateHeroTexts();
+              updateCarousel3d();
+
+              initScrollAnimations();
+            }
+
+           
+            if (name === 'project') {
+              gsap.fromTo(".detail-img, .detail-info", 
+                { opacity: 0, y: 30 },
+                { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", stagger: 0.15 }
+              );
+              gsap.fromTo(".detail-gallery", 
+                { opacity: 0, y: 40 },
+                { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", delay: 0.3 }
+              );
+            }
+            
+            
+            if (name === 'about') {
+              gsap.fromTo(".about-photo-col, .about-info-col", 
+                { opacity: 0, y: 30 },
+                { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", stagger: 0.15 }
+              );
+            }
+
+            
+            if (name === 'progetti') {
+              buildProgettiList();
+              gsap.fromTo(".progetti-header",
+                { opacity: 0, y: 20 },
+                { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }
+              );
+              gsap.fromTo(".pg-row", 
+                { opacity: 0, y: 25 },
+                { opacity: 1, y: 0, duration: 0.7, ease: "power3.out", stagger: 0.08, delay: 0.1 }
+              );
+            }
+
+            
+            if (name === 'contatti') {
+              gsap.fromTo(".contatti-left, .contatti-right", 
+                { opacity: 0, y: 30 },
+                { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", stagger: 0.15 }
+              );
+            }
+          }
+        });
+      } else {
+        window.scrollTo(0, 0);
+        targetView.classList.add('active');
+        gsap.fromTo(targetView, { opacity: 0 }, { 
+          opacity: 1, 
+          duration: 0.3,
+          onComplete: () => {
+            ScrollTrigger.refresh();
+          }
+        });
+        if (name === 'home') {
+          gsap.to(".hero-right-texture", { opacity: 0.85, y: 0, duration: 1.2, ease: "power3.out" });
+          animateHeroTexts();
+          updateCarousel3d();
+        }
+        if (name === 'progetti') buildProgettiList();
+      }
+    }
+
+    /* CAROSELLO 3D */
+    let carIndex = 0;
+    const carPositions = ['pos-far-left','pos-left','pos-center','pos-right','pos-far-right'];
+
+    function buildCarousel() {
+      const stage = document.getElementById('carouselStage');
+      if (!stage) return;
+      stage.innerHTML = '';
+      document.getElementById('carTotal').textContent = String(projects.length).padStart(2, '0');
+
+      projects.forEach((p, i) => {
+        const card = document.createElement('div');
+        card.className = 'carousel-card';
+        card.innerHTML = `
+          <div class="carousel-img-container">
+            ${p.cover
+              ? `<img src="${p.cover}" alt="${p.title}">`
+              : `<div class="carousel-img-placeholder">Project 0${i+1}</div>`}
+            <div class="carousel-img-overlay">
+              <p class="overlay-cat">${p.category}</p>
+              <p class="overlay-title">${p.title}</p>
+            </div>
+          </div>`;
+        card.onclick = () => {
+          if (card.classList.contains('pos-center')) {
+            window.scrollTo(0, 0); // reset card centrale
+            showProject(i, 'home');
+          } else {
+            carIndex = i;
+            updateCarousel3d();
+          }
+        };
+        stage.appendChild(card);
+      });
+
+      document.getElementById('carPrev').onclick = () => {
+        carIndex = (carIndex - 1 + projects.length) % projects.length;
+        updateCarousel3d();
+      };
+      document.getElementById('carNext').onclick = () => {
+        carIndex = (carIndex + 1) % projects.length;
+        updateCarousel3d();
+      };
+
+      updateCarousel3d();
+    }
+
+    function updateCarousel3d() {
+      const cards = document.querySelectorAll('.carousel-card');
+      const total = projects.length;
+      cards.forEach((card, i) => {
+        card.classList.remove(...carPositions);
+        const diff = ((i - carIndex) % total + total) % total;
+        const nd = diff > total / 2 ? diff - total : diff;
+        if      (nd === 0)  card.classList.add('pos-center');
+        else if (nd === -1) card.classList.add('pos-left');
+        else if (nd === 1)  card.classList.add('pos-right');
+        else if (nd < -1)   card.classList.add('pos-far-left');
+        else                card.classList.add('pos-far-right');
+      });
+      document.getElementById('carCurrent').textContent = String(carIndex + 1).padStart(2, '0');
+    }
+
+    /* PAGINA WORKS */
+    function buildProgettiList() {
+      const list = document.getElementById('progettiList');
+      if (!list || list.dataset.built) return;
+      document.getElementById('progettiCount').textContent = `— ${String(projects.length).padStart(2, '0')} works`;
+      
+      projects.forEach((p, i) => {
+        const row = document.createElement('div');
+        row.className = 'pg-row';
+        row.innerHTML = `
+          <span class="pg-row-num">0${i+1}</span>
+          <span class="pg-row-title">${p.title}</span>
+          <span class="pg-row-cat">${p.category}</span>
+          <span class="pg-row-year">${p.year}</span>
+          <span class="pg-row-arrow">→</span>
+          <div class="pg-row-img">
+            ${p.cover ? `<img src="${p.cover}" alt="${p.title}">` : `<div class="pg-row-img-placeholder"></div>`}
+          </div>`;
+        row.onclick = () => showProject(i, 'progetti');
+        list.appendChild(row);
+      });
+      list.dataset.built = '1';
+    }
+
+    /* APERTURA SEZIONE DETTAGLIO PROGETTO */
+    function showProject(idx, from) {
+      window.scrollTo(0, 0); // Forza la quota zero prima del rendering
+      
+      const p = projects[idx];
+      document.getElementById('detailImg').innerHTML = p.cover
+        ? `<img src="${p.cover}" alt="${p.title}">`
+        : `<div class="detail-img-ph">Immagine principale</div>`;
+      document.getElementById('detailCat').textContent   = p.category;
+      document.getElementById('detailTitle').textContent = p.title;
+      document.getElementById('detailYear').textContent  = p.year;
+      document.getElementById('detailRole').textContent  = p.role;
+      document.getElementById('detailTools').textContent = p.tools;
+      document.getElementById('detailDesc').textContent  = p.description;
+      document.getElementById('detailTags').innerHTML    = p.tags.map(t=>`<span class="detail-tag">${t}</span>`).join('');
+      document.getElementById('detailGallery').innerHTML = p.gallery.map((s,i)=>`
+        <div class="gallery-item">${s?`<img src="${s}" alt="${p.title} ${i+1}">`:`<div class="gallery-ph">Immagine ${i+1}</div>`}</div>`).join('');
+      document.getElementById('detailBackBtn').onclick = () => showView(from||'progetti');
+      showView('project');
+    }
+
+    /* VALIDAZIONE FORM CONTATTI */
+    function submitForm() {
+      let ok = true;
+      const n=document.getElementById('fNome').value.trim(), en=document.getElementById('eNome');
+      if(!n){en.classList.add('visible');ok=false;}else en.classList.remove('visible');
+      const e=document.getElementById('fEmail').value.trim(), ee=document.getElementById('eEmail');
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)){ee.classList.add('visible');ok=false;}else ee.classList.remove('visible');
+      const m=document.getElementById('fMsg').value.trim(), em=document.getElementById('eMsg');
+      if(!m){em.classList.add('visible');ok=false;}else em.classList.remove('visible');
+      if(!ok)return;
+      
+      document.getElementById('fNome').value='';
+      document.getElementById('fEmail').value='';
+      document.getElementById('fMsg').value='';
+      const s=document.getElementById('fSuccess');
+      s.classList.add('visible');
+      setTimeout(()=>s.classList.remove('visible'),5000);
+    }
+
+    /* ANIMAZIONI ALL'AVVIO */
+    function animateHeroTexts() {
+      gsap.fromTo(".line-1", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 1.2, ease: "power3.out", delay: 0.1 });
+      gsap.fromTo(".line-2", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 1.0, ease: "power3.out", delay: 0.25 });
+      gsap.fromTo(".hero-issue, .hero-desc", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.9, stagger: 0.18, delay: 0.45, ease: "power3.out" });
+    }
+
+    // le animazioni legate allo scroll 
+    function initScrollAnimations() {
+      
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+
+      gsap.from('.carousel-section', {
+        scrollTrigger: {
+          trigger: '.carousel-section',
+          start: "top 85%",
+          toggleActions: "play none none none"
+        },
+        opacity: 0,
+        y: 40,
+        duration: 1,
+        ease: "power2.out"
+      });
+
+      gsap.from('.about-preview', {
+        scrollTrigger: {
+          trigger: '.about-preview',
+          start: "top 85%",
+          toggleActions: "play none none none"
+        },
+        opacity: 0,
+        y: 40,
+        duration: 1,
+        ease: "power2.out"
+      });
+
+      gsap.from('.contact-strip', {
+        scrollTrigger: {
+          trigger: '.contact-strip',
+          start: "top 85%",
+          toggleActions: "play none none none"
+        },
+        opacity: 0,
+        y: 40,
+        duration: 1,
+        ease: "power2.out"
+      });
+      
+      ScrollTrigger.refresh();
+    }
+
+    /* ANIMAZIONI ALL'AVVIO */
+    function animateHeroTexts() {
+      gsap.fromTo(".line-1", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 1.2, ease: "power3.out", delay: 0.1 });
+      gsap.fromTo(".line-2", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 1.0, ease: "power3.out", delay: 0.25 });
+      gsap.fromTo(".hero-issue, .hero-desc", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.9, stagger: 0.18, delay: 0.45, ease: "power3.out" });
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const activeView = document.querySelector('.view.active');
+      if (!activeView) {
+        document.getElementById('view-home')?.classList.add('active');
+      }
+
+      buildCarousel();
+
+      // animazioni Hero all'avvio
+      gsap.from(".line-1", { opacity: 0, y: 60, duration: 1.2, ease: "power3.out", delay: 0.2 });
+      gsap.from(".line-2", { opacity: 0, y: 40, duration: 1.0, ease: "power3.out", delay: 0.35 });
+      gsap.from(".hero-issue, .hero-desc", { opacity: 0, y: 20, duration: 0.9, stagger: 0.18, delay: 0.55, ease: "power3.out" });
+      gsap.from(".hero-right-texture", { opacity: 0, y: 40, duration: 1.5, ease: "power3.out", delay: 0.1 });
+
+      // attiva i trigger la prima volta
+      initScrollAnimations();
+    });
+  </script>
+</body>
+</html>
